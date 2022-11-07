@@ -22,7 +22,17 @@ app.get('/:room', (req, res) => {
 })
 
 io.on('connection', socket => {
-  console.log('someone ')
+  socket.on('join-room', (roomId, userId) => {
+    // 能够加入&创建一个频道
+    socket.join(roomId)
+    // 发给所有其他人，但不会发给当前socket
+    socket.to(roomId).emit('user-connected', userId)
+
+    // 5.断开连接
+    socket.on('disconnect', () => {
+      socket.to(roomId).emit('user-disconnected', userId)
+    })
+  })
 })
 
 server.listen(3000, function () {

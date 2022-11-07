@@ -5,20 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <script>
+      // get the roomId passed by server
+      const ROOM_ID = '<%= roomId%>'
+    </script>
     <!-- 建立或者加入一个socket.io建立的room -->
     <script src="/socket.io/socket.io.js" defer></script>
     <script src="script.js" defer></script>
     <style>
       #video-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, 300px);
-        grid-auto-rows: 300px;
+        display: flex;
       }
-
+      #video-grid div {
+        flex: 1;
+        background-color: lightgreen;
+        border: 1px dashed black;
+      }
       video {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
       }
     </style>
   </head>
