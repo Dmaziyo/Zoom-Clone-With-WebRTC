@@ -21,6 +21,10 @@ app.get('/:room', (req, res) => {
   res.render('room', { roomId: req.params.room })
 })
 
+io.on('connection', socket => {
+  console.log('someone ')
+})
+
 server.listen(3000, function () {
   console.log('server is running on http://localhost:3000/')
 })
