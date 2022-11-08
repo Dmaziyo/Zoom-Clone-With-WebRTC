@@ -14,7 +14,7 @@ const div = document.createElement('div')
 myVideo.muted = true
 const peers = {}
 navigator.mediaDevices
-  .getDisplayMedia({
+  .getUserMedia({
     video: true,
     audio: true
   })
