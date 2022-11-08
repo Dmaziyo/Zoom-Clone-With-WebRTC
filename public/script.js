@@ -29,18 +29,20 @@ navigator.mediaDevices
 
     // 4.接收其他之前加入的用户传来的信息
     myPeer.on('call', call => {
-      console.log('老玩家来邀请')
-
+      peers[call.peer] = call
+      //获取call传过来的stream并进行相应操作
+      call.on('stream', userVideoStream => {
+        addVideoStream(video, userVideoStream, new_div)
+      })
+      call.on('close', () => {
+        new_div.remove()
+      })
       //将自己的stream发给对方
       call.answer(stream)
       const video = document.createElement('video')
-      //获取call传过来的stream并进行相应操作
-      call.on('stream', userVideoStream => {
-        addVideoStream(video, userVideoStream)
-      })
+      const new_div = document.createElement('div')
     })
     socket.emit('join-room', ROOM_ID, peerId)
-    console.log('调用emit')
   })
 
 // 1.peer 连接 STUN/TURN服务器,利用socket向该room的人广播通知
