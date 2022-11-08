@@ -28,17 +28,17 @@ navigator.mediaDevices
     })
 
     // 4.接收其他之前加入的用户传来的信息
-    myPeer.on('call', call => {
-      peers[call.peer] = call
+    myPeer.on('call', mediaConnection => {
+      peers[mediaConnection.peer] = mediaConnection
       //获取call传过来的stream并进行相应操作
-      call.on('stream', userVideoStream => {
+      mediaConnection.on('stream', userVideoStream => {
         addVideoStream(video, userVideoStream, new_div)
       })
-      call.on('close', () => {
+      mediaConnection.on('close', () => {
         new_div.remove()
       })
       //将自己的stream发给对方
-      call.answer(stream)
+      mediaConnection.answer(stream)
       const video = document.createElement('video')
       const new_div = document.createElement('div')
     })
@@ -59,21 +59,21 @@ socket.on('user-disconnected', userId => {
 
 // 3.听到用户的新通知,将自己介绍过去
 function connectToNewUser(userId, stream) {
-  const call = myPeer.call(userId, stream)
+  const mediaConnection = myPeer.call(userId, stream)
   const video = document.createElement('video')
   const div = document.createElement('div')
   //   将新加入的用户视频流添加至grid
-  call.on('stream', userVideoStream => {
+  mediaConnection.on('stream', userVideoStream => {
     addVideoStream(video, userVideoStream, div)
     console.log('添加成功')
   })
 
-  call.on('close', () => {
+  mediaConnection.on('close', () => {
     //6.断开视频
     div.remove()
   })
 
-  peers[userId] = call
+  peers[userId] = mediaConnection
 }
 
 // 设置一个视频流组件，然后添加进去
